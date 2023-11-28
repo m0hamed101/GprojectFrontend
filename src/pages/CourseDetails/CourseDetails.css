@@ -1,0 +1,44 @@
+/* .topic-title {
+    width: 100%;
+    padding-left: 2%;
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+*/
+.topic {
+    min-width: fit-content;
+}
+
+.pdfimg img {
+    width: 10px;
+    height: 10px;
+    margin: 10px;
+}
+
+.topic small {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    background-color: rgb(224, 217, 217);
+    width: fit-content;
+    padding: 0px 5px;
+    margin: 3px;
+    border-radius: 10px;
+}
+/*
+.quizlink .Link {
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    color: white;
+    width: 20%;
+    background-color: rgb(80, 80, 241);
+    padding: 10px;
+    margin: 10px;
+
+}
+
+.quizlink {
+    width: 100%;
+    justify-content: center;
+} */
