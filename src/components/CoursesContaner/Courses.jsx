@@ -66,39 +66,39 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 // import axios from 'axios';
 import { Card } from '../Card/Card';
-// import { useAuthContext } from '../../pages/Login/hooks/useAuthContext';
+import { useAuthContext } from '../../pages/Login/hooks/useAuthContext';
 
 export const Courses = () => {
-    // const { user } = useAuthContext();
-    // const [courses, setCourses] = useState([]);
-    // const [loading, setLoading] = useState(false);
+    const { user } = useAuthContext();
+    const [courses, setCourses] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    // useEffect(() => {
-    //     const fetchCourses = async () => {
-    //         try {
-    //             const response = await fetch(`http://localhost:5000/api/user/getCourse/${user._id}`);
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/user/getallCourse/${user._id}`);
 
-    //             if (!response.ok) {
-    //                 throw new Error('Network response was not ok');
-    //             }
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
 
-    //             const responseData = await response.json();
-    //             setCourses(responseData);
-    //             setLoading(false);
-    //         } catch (error) {
-    //             console.error('Fetch error:', error);
-    //             setLoading(false);
-    //         }
-    //     };
+                const responseData = await response.json();
+                setCourses(responseData);
+                setLoading(false);
+            } catch (error) {
+                console.error('Fetch error:', error);
+                setLoading(false);
+            }
+        };
 
-    //     // Call the fetchCourses function
-    //     fetchCourses();
-    // }, [user._id]);
+        // Call the fetchCourses function
+        fetchCourses();
+    }, [user._id]);
 
-    // useEffect(() => {
-    //     console.log("fetching");
-    //     console.log(courses);
-    // }, [courses]);
+    useEffect(() => {
+        console.log("fetching");
+        console.log(courses);
+    }, [courses]);
 
     const Container = styled.div`
         /* border-radius:15px; */
@@ -111,7 +111,10 @@ export const Courses = () => {
 
     return (
         <Container className='rounded-lg shadow'>
-            
+        {loading ?<div><h1>loading</h1></div>:
+        courses.courses.map(contact => (
+            <Card key={contact.id} props={contact}/>))
+        }
         </Container>
     );
 };

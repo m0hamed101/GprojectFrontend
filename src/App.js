@@ -9,6 +9,7 @@ import {Form} from './pages/Login/Form'
 import {Admin_Courses} from './components/admin/courses/Admin_Courses'
 import {Admin_users} from './components/admin/users/Admin_users'
 import {AddCourseToUser} from './components/admin/users/AddCourseToUser'
+import CourseDetails from './pages/CourseDetails/CourseDetails'
 
 // login
 import { useAuthContext } from './pages/Login/hooks/useAuthContext'
@@ -66,6 +67,7 @@ function App() {
     <BrowserRouter>
     <Routes>
           <Route exact path='/' element={user?<Home/>: <Form />} />
+          <Route exact path='/CourseDetails/:_id' element={user?<CourseDetails/>: <Form />} />
           <Route  path='/Admin_users'element={user?<Admin_users/>: <Form />} />
           <Route  path='/Admin_users/Create_New_User'element={user?<AddUser/>: <Form />} />
 
