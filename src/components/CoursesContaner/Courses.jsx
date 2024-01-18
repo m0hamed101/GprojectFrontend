@@ -76,7 +76,7 @@ export const Courses = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/user/getallCourse/${user._id}`);
+                const response = await fetch(`https://gproject-63ye.onrender.com/api/user/getallCourse/${user._id}`);
 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
