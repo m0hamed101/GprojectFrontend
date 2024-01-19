@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import EventImage from '../../Assets/DataBase.jpg'
 import '../CourseDetails/CourseDetails.css'
 import pdficon from '../../Assets/pdf-download-2617.png'
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header/Header';
+import { useAuthContext } from '../Login/hooks/useAuthContext';
 
 
 export default function CourseDetails() {
+    const {user}=useAuthContext()
 
 
     const [courses, setCourses] = useState([]);
