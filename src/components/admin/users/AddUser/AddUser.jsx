@@ -40,9 +40,6 @@ const AddUser = () => {
 
     const handleSubmit = () => {
         // Validate the form before submitting
-        
-
-        
             // Form is valid, proceed with submitting data
             const dataToSend = {
                 name: formData.userName,
@@ -66,9 +63,11 @@ const AddUser = () => {
                 .then((data) => {
                     // Handle the response data as needed
                     console.log(data);
+                    alert("user Added")
                 })
                 .catch((error) => {
                     console.error('Error:', error);
+                    alert("errer")
                 });
         
     };

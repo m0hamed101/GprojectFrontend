@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 
 import axios from 'axios';
 import Header from '../../Header/Header';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams ,useNavigate } from 'react-router-dom';
 
 export const List = ({ contacts }, { loading }) => {
+      let navigate = useNavigate();
+
     const { id } =useParams();
     // const handleAdd =async(props)=>{
     // }
@@ -23,6 +25,7 @@ export const List = ({ contacts }, { loading }) => {
 
             const response = await axios.post(API_URL, data);
             alert('Course added successfully:')
+            // navigate('/');
             // console.log('Course added successfully:', response.data);
         } catch (error) {
             console.error('Error adding course to user:', error);

@@ -95,11 +95,6 @@ export const Courses = () => {
         fetchCourses();
     }, [user._id]);
 
-    useEffect(() => {
-        console.log("fetching");
-        console.log(courses);
-    }, [courses]);
-
     const Container = styled.div`
         /* border-radius:15px; */
         padding: 5px;
@@ -112,8 +107,8 @@ export const Courses = () => {
     return (
         <Container className='rounded-lg shadow'>
         {loading ?<div><h1>loading</h1></div>:
-        courses.courses.map(contact => (
-            <Card key={contact.id} props={contact}/>))
+        courses?.courses?.map(contact => (
+            <Card key={contact?._id} props={contact}/>))
         }
         </Container>
     );

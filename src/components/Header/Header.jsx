@@ -188,6 +188,7 @@ const Header = () => {
   const { user } = useAuthContext()
   const User = user?.permission
   const UserName = user?.name;
+  const UserId = user?.id;
 
   const { logout } = useLogout()
   const handleClicklogout = () => {
@@ -220,7 +221,8 @@ const Header = () => {
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
             <Link to={"/"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Courses</Link>
             <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Instructor</Link>
-            <Link to={"/MyclassName"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">className</Link>
+            <span className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'> Your ID Is , {UserId}</span>
+            {/*<Link to={"/MyclassName"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">className</Link>*/}
 
           </Popover.Group>
         }
@@ -277,7 +279,8 @@ const Header = () => {
                 <div className="space-y-2 py-6">
                   <Link to={"/"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Courses</Link>
                   <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Instructor</Link>
-                  <Link to={"/MyclassName"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">className</Link>
+                  <span className='m-5'> Hi , {UserId}</span>
+      {/*<Link to={"/MyclassName"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">className</Link>*/}
                 </div>}
 
               {User === "Instructor" &&

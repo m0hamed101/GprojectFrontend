@@ -6,7 +6,7 @@ export const Card = ({props}) => {
     return (
         <Link to={'./CourseDetails/'+props.courseId?._id}>
             <div className=" rounded-lg shadow  m-2 p-1">
-                <img className="rounded-lg" style={{maxWidth:"150px"}} src={props.courseId?.ImageURL} alt="" />
+                <img className="rounded-lg" src={props.courseId?.ImageURL} alt="" />
                 <div className="p-5">
                     <Link to={"/"}>
                         <h1 className="mb-2 dark:text-white" style={{ color: '#000' }}>CourseName : {props.courseId?.courseName}</h1>

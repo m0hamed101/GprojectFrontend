@@ -40,7 +40,7 @@ export const List = ({ contacts }, { loading }) => {
                     {contact.DocName}
                   </td>
                   <td className="px-6 py-4">
-                    <Link to={`./updatecourse/${contact._id}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
+                    <Link to={`/CourseDetails/${contact._id}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
                   </td>
                   <td className="px-6 py-4">
                     <button>remove</button>
@@ -78,7 +78,7 @@ export const Admin_Courses = () => {
   const filteredContacts = search.length === 0 ? contacts :
     // contacts.filter(contact => contact.id)
     contacts.filter(contact =>
-      contact.id.toString().toLowerCase().includes(search?.toLowerCase()))
+      contact.courseName.toString().toLowerCase().includes(search?.toLowerCase()))
 
 
 
@@ -86,7 +86,7 @@ export const Admin_Courses = () => {
     <div>
       <Header/>
       <div style={{ width: "100%", display: "flex", alignItems: 'center', justifyContent: "center" }}>
-      <input value={search} onChange={(e) => setSearch(e.target.value)} className=" m-5 shadow appearance-none border rounded py-2 px-14 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Course ID"/>
+      <input value={search} onChange={(e) => setSearch(e.target.value)} className=" m-5 shadow appearance-none border rounded py-2 px-14 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Course Name"/>
   <Link to={'./Create_New_Course'}>Create New Courses</Link>
         {/*<h3>CONTACTS LIST</h3>
         <Input style={{ margin: '15px' }}

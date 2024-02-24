@@ -7,12 +7,13 @@ import Header from '../../components/Header/Header';
 const questionsData = [
   {
     question: 'What is the capital of France?',
+    type: "MEQ",
     options: ['Paris', 'Berlin', 'Madrid', 'London'],
     correctAnswer: 'Paris'
   },
   {
     question: 'Which planet is known as the Red Planet?',
-    options: ['Mars', 'Earth', 'Jupiter', 'Venus'],
+    type: "ANSER",
     correctAnswer: 'Mars'
   },
   // Add more questions here
@@ -59,26 +60,40 @@ const QuizApp = () => {
     }
   };
 
-  const renderOptions = (options) => {
-    return options.map((option, index) => (
-      <div
-        key={index}
-        className={`option ${selectedOption === option ? 'selected' : ''}`}
-        onClick={() => handleOptionSelect(option)}
-      >
-        {option}
-      </div>
-    ));
+  const renderOptions = () => {
+    const question = questionsData[currentQuestion];
+    if (question.type === "MEQ") {
+      return question.options.map((option, index) => (
+        <div
+          key={index}
+          className={`option ${selectedOption === option ? 'selected' : ''}`}
+          onClick={() => handleOptionSelect(option)}
+        >
+          {option}
+        </div>
+      ));
+    } else if (question.type === "ANSER") {
+      return (
+      //   <textarea
+      //     value={selectedOption}
+      //     onChange={(e) => setSelectedOption(e.target.value)}
+      //     placeholder="Type your answer here..."
+      //   />
+      <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+      );
+
+    }
   };
 
   return (
+    <div>
+    <Header />
     <div className="quiz-container">
-    <Header/>
-    <div className="timer m-5">Time left: {timeLeft} seconds</div>
+      <div className="timer m-5">Time left: {timeLeft} seconds</div>
       <div className="question">
         <h2>{questionsData[currentQuestion].question}</h2>
-        <div className="options">{renderOptions(questionsData[currentQuestion].options)}</div>
-        
+        <div className="options">{renderOptions()}</div>
+
         <div className="button-container">
           <button onClick={handlePreviousQuestion} disabled={currentQuestion === 0}>
             Previous
@@ -98,6 +113,7 @@ const QuizApp = () => {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 };
