@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 
 import axios from 'axios';
 import Header from '../../Header/Header';
-import { Link, useParams ,useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
 export const List = ({ contacts }, { loading }) => {
-      let navigate = useNavigate();
+    let navigate = useNavigate();
 
-    const { id } =useParams();
+    const { id } = useParams();
     // const handleAdd =async(props)=>{
     // }
 
@@ -31,7 +31,7 @@ export const List = ({ contacts }, { loading }) => {
             console.error('Error adding course to user:', error);
         }
     };
-    
+
 
     return (
         <div>
@@ -49,7 +49,7 @@ export const List = ({ contacts }, { loading }) => {
                                     DocName
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Actions
+                                    Delete
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     ADD
@@ -69,7 +69,7 @@ export const List = ({ contacts }, { loading }) => {
                                         <Link to={`./updatecourse/${contact._id}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <button onClick={()=>{handleAdd(contact._id)}} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Add</button>
+                                        <button onClick={() => { handleAdd(contact._id) }} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Add</button>
                                     </td>
                                 </tr>
                             ))}

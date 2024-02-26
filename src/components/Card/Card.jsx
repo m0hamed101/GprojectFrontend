@@ -4,9 +4,9 @@ import courseimage from '../../Assets/DataBase.jpg'
 import { Link } from 'react-router-dom';
 export const Card = ({props}) => {
     return (
-        <Link to={'./CourseDetails/'+props.courseId?._id}>
-            <div className=" rounded-lg shadow  m-2 p-1">
-                <img className="rounded-lg" src={props.courseId?.ImageURL} alt="" />
+        <Link style={{width:"100%"}} to={'./CourseDetails/'+props.courseId?._id}>
+            <div style={{maxWidth:"300px"}} className=" rounded-lg shadow  m-2 p-1">
+                <img style={{maxWidth:"100%"}} className="rounded-lg" src={props.courseId?.ImageURL} alt="" />
                 <div className="p-5">
                     <Link to={"/"}>
                         <h1 className="mb-2 dark:text-white" style={{ color: '#000' }}>CourseName : {props.courseId?.courseName}</h1>

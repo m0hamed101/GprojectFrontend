@@ -486,8 +486,6 @@
 //         // }
 //     }));
 
-
-
 import React, { useEffect, useState } from 'react';
 import EventImage from '../../Assets/DataBase.jpg';
 import '../CourseDetails/CourseDetails.css';
@@ -500,6 +498,8 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { DeleteMaterialbtn } from '../../components/loading/loading';
+import axios from 'axios';
 
 export default function CourseDetails() {
     const { user } = useAuthContext();
@@ -572,6 +572,28 @@ export default function CourseDetails() {
 
     const handleModalClose = () => {
         setIsModalOpen(false);
+    };
+
+    const handleDelete = async (courseId, materialId) => {
+        try {
+            await axios.delete(`https://gproject-63ye.onrender.com/api/user/deleteMaterial/${courseId}/${materialId}`);
+            // Update the state to reflect the deletion
+            setCourses(prevCourses => {
+                const updatedCourses = prevCourses.map(course => {
+                    return {
+                        ...course,
+                        materials: course.materials.filter(material => material._id !== materialId)
+                    };
+                });
+                return updatedCourses;
+            });
+            // Show success message or handle as needed
+            alert("Material deleted successfully");
+        } catch (err) {
+            // Handle error, maybe show an error message
+            console.error('Error deleting material:', err);
+            alert("Error deleting material");
+        }
     };
 
     useEffect(() => {
@@ -713,8 +735,11 @@ export default function CourseDetails() {
                     switch (course?.type) {
                         case 'lecture':
                             return (
-                                <div className="topic rounded-lg shadow m-3 p-2" key={course.title}>
-                                    <small className='topic-title'>{course.title}</small>
+                                <div className="border topic rounded-lg shadow m-3 p-2" key={course.title}>
+                                    <div style={{ display: "flex", justifyContent: "space-between", padding: "15px" }}>
+                                        <small className='topic-title'>{course.title}</small>
+                                        <button onClick={() => handleDelete(id, course._id)}><DeleteMaterialbtn /></button>
+                                    </div>
                                     <div className="NOTES">{course.description}</div>
                                     <a className='pdfimg flex bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded' href={course.fileLink}>
                                         <img src={pdficon} alt="PDF icon" />Download Lecture
@@ -723,8 +748,11 @@ export default function CourseDetails() {
                             );
                         case 'quiz':
                             return (
-                                <div className="topic rounded-lg shadow m-3 p-2" key={course.title}>
-                                    <small className='topic-title'>Quiz</small>
+                                <div className="border topic rounded-lg shadow m-3 p-2" key={course.title}>
+                                    <div style={{ display: "flex", justifyContent: "space-between", padding: "15px" }}>
+                                        <small className='topic-title'>{course.title}</small>
+                                        <button onClick={() => handleDelete(id, course._id)}><DeleteMaterialbtn /></button>
+                                    </div>
                                     <h1 className='m-6'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, dolores. Dicta, aperiam recusandae! Fuga vero suscipit, aspernatur vitae corporis libero blanditiis alias deleniti dolore. Deleniti itaque sed atque cum recusandae.</h1>
                                     <div className='quizlink'>
                                         <Link className='Link flex bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded' to={'/quizapp'}>Quiz</Link>
@@ -733,14 +761,18 @@ export default function CourseDetails() {
                             );
                         case 'assignment':
                             return (
-                                <div className="topic rounded-lg shadow m-3 p-2" key={course.title}>
-                                    <small className='topic-title'>Assignment</small>
+                                <div className="border topic rounded-lg shadow m-3 p-2" key={course.title}>
+                                    <div style={{ display: "flex", justifyContent: "space-between", padding: "15px" }}>
+                                        <small className='topic-title'>{course.title}</small>
+                                        <button onClick={() => handleDelete(id, course._id)}><DeleteMaterialbtn /></button>
+
+                                    </div>
                                     <div className="NOTES">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, dolores. Dicta, aperiam recusandae! Fuga vero suscipit, aspernatur vitae corporis libero blanditiis alias deleniti dolore. Deleniti itaque sed atque cum recusandae.</div>
                                     <a className='pdfimg flex bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded' href={course.fileLink}>
                                         <img src={pdficon} alt="PDF icon" />Download Assignment
                                     </a>
                                     <div className='quizlink'>
-                                        <Link className='Link' to={'/quizapp'}>Upload Assignment</Link>
+                                        <Link className='Link' to={'/'}>Upload Assignment</Link>
                                     </div>
                                 </div>
                             );

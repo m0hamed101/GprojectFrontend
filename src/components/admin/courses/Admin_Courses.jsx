@@ -4,7 +4,7 @@ import axios from 'axios';
 import Header from '../../Header/Header';
 import { Link } from 'react-router-dom';
 
-export const List = ({ contacts }, { loading }) => {
+export const List = ({ contacts, loading,onDelete }) => {
   const UserDATA=contacts._id
   // console.log(contacts);
   return (
@@ -23,7 +23,7 @@ export const List = ({ contacts }, { loading }) => {
                   DocName
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Actions
+                  Edit
                 </th>
                 <th scope="col" className="px-6 py-3">
                   remove
@@ -43,7 +43,7 @@ export const List = ({ contacts }, { loading }) => {
                     <Link to={`/CourseDetails/${contact._id}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
                   </td>
                   <td className="px-6 py-4">
-                    <button>remove</button>
+                  <button onClick={() => onDelete(contact._id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Remove</button>
                   </td>
                 </tr>
               ))}
@@ -80,7 +80,19 @@ export const Admin_Courses = () => {
     contacts.filter(contact =>
       contact.courseName.toString().toLowerCase().includes(search?.toLowerCase()))
 
+      const handleDelete = async (id) => {
 
+        try {
+          await axios.delete(`https://gproject-63ye.onrender.com/api/user/deletecourses/${id}`);
+          // Handle success, maybe update state or show a notification
+          // console.log('Item deleted successfully');
+          alert("Item deleted successfully")
+        } catch (err) {
+          // Handle error, maybe show an error message
+          console.error('Error deleting item:', err);
+        }
+        
+      };
 
   return (
     <div>
@@ -96,7 +108,7 @@ export const Admin_Courses = () => {
         />*/}
       </div>
 
-      <List contacts={filteredContacts} loading={loading} />
+      <List contacts={filteredContacts} loading={loading} onDelete={handleDelete} />
     </div>
   )
 }

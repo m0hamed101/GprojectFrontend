@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import Header from '../../Header/Header';
-import { storage } from '../../../firebase'; // Import the firebase storage instance
+import { storage } from '../../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-const Add_course = () => {
+const AddCourse = () => {
     const [file, setFile] = useState(null);
     const [downloadURL, setDownloadURL] = useState('');
-    const [courseName, setCourseName] = useState(''); // State for CourseName
-    const [docName, setDocName] = useState(''); // State for DOCName
+    const [courseName, setCourseName] = useState('');
+    const [docName, setDocName] = useState('');
+    const [isUploading, setIsUploading] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false); // Track form submission state
+
+    useEffect(() => {
+        console.log(downloadURL);
+    }, [downloadURL]); // Log downloadURL whenever it changes
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -17,120 +23,113 @@ const Add_course = () => {
     };
 
     const handleUpload = () => {
-        if (file == null) return;
+        if (file === null) return;
+        setIsUploading(true);
         const imageRef = ref(storage, `files/${file.name}`);
 
-        // Upload the file
         uploadBytes(imageRef, file)
-            .then(() => {
-                // Once the upload is complete, get the download URL
-                return getDownloadURL(imageRef);
-            })
+            .then(() => getDownloadURL(imageRef))
             .then((url) => {
-                // Now you have the download URL, you can use it as needed
                 setDownloadURL(url);
-                // console.log('File download URL:', url);
+                setIsUploading(false);
+                alert('File uploaded successfully!');
             })
             .catch((error) => {
-                // Handle any errors that occurred during the upload
+                setIsUploading(false);
                 console.error('Error uploading file:', error);
+                alert('An error occurred while uploading the file.');
             });
     };
 
     const sendFormData = () => {
-        // Create a FormData object to send as the request body
-        const formData = new FormData();
-        formData.append('courseName', courseName);
-        formData.append('DocName', docName);
-        formData.append('ImageURL', downloadURL); // Use downloadURL from state
-
-        // Send a POST request to your server or API
+        setIsSubmitting(true); // Set submitting state to true
         fetch('https://gproject-63ye.onrender.com/api/course/createcourse', {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                courseName:courseName,
-                DocName:docName,
-                ImageURL:downloadURL,
+                courseName: courseName,
+                DocName: docName,
+                ImageURL: downloadURL, // Use ImageURL as expected by backend
+                materials: []
             })
         })
             .then((response) => {
+                setIsSubmitting(false); // Reset submitting state
                 if (!response.ok) {
+                    alert('Error');
                     throw new Error('Network response was not ok');
                 }
-                return response.json(); // You can handle the response here
+                return response.json();
             })
             .then((data) => {
-                console.log('Response data:', data);
+                alert('Course added successfully!');
+                setCourseName(''); // Clear input fields
+                setDocName('');
+                setDownloadURL('');
             })
             .catch((error) => {
+                setIsSubmitting(false); // Reset submitting state
                 console.error('Error sending data:', error);
+                alert('An error occurred while adding the course.');
             });
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault(); // Prevent the form from submitting normally
-        // Call handleUpload to upload the file and get the download URL
-        handleUpload();
-        // Call sendFormData to send the form data
+        e.preventDefault();
+        if (file === null) {
+            alert('Please select a file');
+            return;
+        }
         sendFormData();
     };
 
     return (
         <div>
             <Header />
-            <div
-                style={{
-                    height: '100vh',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <form
-                    onSubmit={handleSubmit} // Handle form submission
-                    style={{
-                        width: '80%',
-                        height: '80%',
-                        border: '1px solid',
-                        borderRadius: '15px',
-                        padding: '15px',
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(1fr, minmax(300px, 1fr))',
-                    }}
-                >
+            <div style={{
+                height: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+                <form onSubmit={handleSubmit} style={{
+                    width: '80%',
+                    height: '80%',
+                    border: '1px solid',
+                    borderRadius: '15px',
+                    padding: '15px',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(1fr, minmax(300px, 1fr))',
+                }}>
                     <TextField
                         value={courseName}
                         className="m-1"
-                        label="CourseName"
-                        name="CourseName"
-                        onChange={(e) => setCourseName(e.target.value)} // Update CourseName state
+                        label="Course Name"
+                        name="courseName"
+                        onChange={(e) => setCourseName(e.target.value)}
                         required
                     />
-
                     <TextField
                         value={docName}
                         className="m-1"
-                        label="DOCName"
-                        name="DOCName"
-                        onChange={(e) => setDocName(e.target.value)} // Update DOCName state
+                        label="DOC Name"
+                        name="docName"
+                        onChange={(e) => setDocName(e.target.value)}
                         required
                     />
-
                     <div className="file">
                         <input type="file" onChange={handleFileChange} />
                         <Button
                             style={{ border: '1px solid blue' }}
                             onClick={handleUpload}
+                            disabled={isUploading}
                         >
                             Upload
                         </Button>
                     </div>
-
-                    <Button type="submit" style={{ border: '1px solid blue' }}>
+                    <Button type="submit" style={{ border: '1px solid blue' }} disabled={isUploading || isSubmitting}>
                         Submit
                     </Button>
                 </form>
@@ -139,4 +138,4 @@ const Add_course = () => {
     );
 };
 
-export default Add_course;
+export default AddCourse;

@@ -64,9 +64,9 @@
 
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-// import axios from 'axios';
 import { Card } from '../Card/Card';
 import { useAuthContext } from '../../pages/Login/hooks/useAuthContext';
+import Loader from '../loading/loading';
 
 export const Courses = () => {
     const { user } = useAuthContext();
@@ -101,12 +101,16 @@ export const Courses = () => {
         border: 1px solid #7986CB;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        /* display: flex; */
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     `;
 
 
     return (
         <Container className='rounded-lg shadow'>
-        {loading ?<div><h1>loading</h1></div>:
+        {loading ?<Loader/>:
         courses?.courses?.map(contact => (
             <Card key={contact?._id} props={contact}/>))
         }
