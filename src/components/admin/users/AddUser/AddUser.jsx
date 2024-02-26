@@ -46,7 +46,7 @@ const AddUser = () => {
         };
 
         // Send the data using the Fetch API
-        fetch('http://localhost:5000/api/user/createUser', {
+        fetch('https://gproject-63ye.onrender.com/api/user/createUser', {
             method: 'POST',
             mode: 'cors',
             headers: {
