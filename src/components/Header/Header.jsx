@@ -200,7 +200,7 @@ const Header = () => {
     <div className="bg-white">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
           </a>
@@ -220,14 +220,14 @@ const Header = () => {
           User === "user" &&
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
             <Link to={"/"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Courses</Link>
-            <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Instructor</Link>
+            <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">instructor</Link>
             <span className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'> Your ID Is , {UserId}</span>
             {/*<Link to={"/MyclassName"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">className</Link>*/}
 
           </Popover.Group>
         }
         {
-          User === "Instructor" &&
+          User === "instructor" &&
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
             <Link to={"/"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Courses</Link>
             <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Students</Link>
@@ -255,7 +255,7 @@ const Header = () => {
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
+            <a href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <img
                 className="h-8 w-auto"
@@ -278,7 +278,7 @@ const Header = () => {
               {User === "user" &&
                 <div className="space-y-2 py-6">
                   <Link to={"/"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Courses</Link>
-                  <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Instructor</Link>
+                  <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">instructor</Link>
                   <span className='m-5'> Hi , {UserId}</span>
       {/*<Link to={"/MyclassName"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">className</Link>*/}
                 </div>}

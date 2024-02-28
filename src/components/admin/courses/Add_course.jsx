@@ -86,31 +86,36 @@ const AddCourse = () => {
     };
 
     return (
-        <div>
+        <div style={{ width: "100%" }}>
             <Header />
             <div style={{
-                height: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "80vh",
             }}>
                 <form onSubmit={handleSubmit} style={{
-                    width: '80%',
-                    height: '80%',
+                    maxWidth: "600px",
+                    width: "100%",
+                    padding: "20px",
                     border: '1px solid',
-                    borderRadius: '15px',
-                    padding: '15px',
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(1fr, minmax(300px, 1fr))',
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    background: "#fff",
+                    textAlign: "center",
                 }}>
-                    <TextField
-                        value={courseName}
-                        className="m-1"
-                        label="Course Name"
-                        name="courseName"
-                        onChange={(e) => setCourseName(e.target.value)}
-                        required
-                    />
+                <div className="flex w-1/1">
+                    <div style={{margin:'5px',width:"100%"}}>
+                        <TextField
+                            value={courseName}
+                            label="Course Name"
+                            name="courseName"
+                            onChange={(e) => setCourseName(e.target.value)}
+                            required
+                            fullWidth
+                        />
+                    </div>
+                    <div style={{margin:'5px',width:"100%"}}>
                     <TextField
                         value={docName}
                         className="m-1"
@@ -118,23 +123,33 @@ const AddCourse = () => {
                         name="docName"
                         onChange={(e) => setDocName(e.target.value)}
                         required
+                        fullWidth
                     />
-                    <div className="file">
-                        <input type="file" onChange={handleFileChange} />
+                    </div>
+                    </div>
+                    <div className="file m-3 ">
+                        <input type="file" onChange={handleFileChange} style={{maxWidth:"50%"}} />
                         <Button
-                            style={{ border: '1px solid blue' }}
+                            style={{ border: '1px solid blue',maxWidth:"50%" }}
                             onClick={handleUpload}
                             disabled={isUploading}
+                            fullWidth
                         >
-                            Upload
+                            {isUploading ? 'Uploading...' : 'Upload'}
                         </Button>
                     </div>
-                    <Button type="submit" style={{ border: '1px solid blue' }} disabled={isUploading || isSubmitting}>
-                        Submit
+                    <Button
+                        type="submit"
+                        style={{ border: '1px solid blue' }}
+                        disabled={isUploading || isSubmitting}
+                        fullWidth
+                    >
+                        {isSubmitting ? 'Submitting...' : 'Submit'}
                     </Button>
                 </form>
             </div>
         </div>
+
     );
 };
 

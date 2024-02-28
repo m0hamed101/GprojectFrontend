@@ -8,8 +8,8 @@ export default function Home() {
     return (
         <div className="App">
         <Header/>
-            <div style={{ margin: '0px 3rem' }}>
-                <div className='Appcontaner'>
+            <div>
+                <div className='Appcontaner m-1'>
                     <Courses/>
                     {user === "user"&&
                     <Event />

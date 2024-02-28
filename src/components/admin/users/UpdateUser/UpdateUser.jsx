@@ -187,6 +187,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Header from '../../../Header/Header';
 import { useParams } from 'react-router-dom';
+import Loader from '../../../loading/loading';
 
 const UpdateUser = () => {
     const { id } = useParams();
@@ -263,7 +264,7 @@ const UpdateUser = () => {
             <Header />
             <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {loading ? (
-                    <p>Loading...</p>
+                    <Loader/>
                 ) : (
                     <form
                         style={{
