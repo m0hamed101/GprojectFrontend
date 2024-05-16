@@ -9,12 +9,10 @@ export const Card = ({props}) => {
                 <img style={{maxWidth:"100%"}} className="rounded-lg" src={props.courseId?.ImageURL} alt="" />
                 <div className="p-5">
                     <Link to={"/"}>
-                        <h1 className="mb-2 dark:text-white" style={{ color: '#000' }}>CourseName : {props.courseId?.courseName}</h1>
+                        <h1 className="mb-2 dark:text-white" style={{ color: '#000' }}>{props.courseId?.courseName}</h1>
                     </Link>
                     {/* <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">DISCREPTION : Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>*/}
-                    <div style={{ border: "#000 solid 1px", borderRadius: '5px', padding: '5px', color: 'black'}}>
-                        Doc :  {props.courseId?.DocName}
-                    </div>
+                    <div style={{ border: "#000 solid 1px", borderRadius: '5px', padding: '5px', color: 'black'}}>{props.courseId?.DocName}</div>
                 </div>
             </div>
             

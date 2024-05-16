@@ -25,7 +25,7 @@ export default function Event() {
                             </div>
                             <div className="flex-1 min-w-0">
                                 <p className='EventType'>
-                                    Quize
+                                    quiz
                                 </p>
                                 <small className="">
                                     2023/12/15 to 2023/12/15
@@ -49,7 +49,7 @@ export default function Event() {
                             </div>
                             <div className="flex-1 min-w-0">
                                 <p className='EventType'>
-                                    Assinmint
+                                Assignment
                                 </p>
                                 <small className="">
                                     2023/12/15 to 2023/12/15
@@ -73,7 +73,7 @@ export default function Event() {
                             </div>
                             <div className="flex-1 min-w-0">
                                 <p className='EventType'>
-                                    Quize
+                                    quiz
                                 </p>
                                 <small className="">
                                     2023/12/15 to 2023/12/15
@@ -97,7 +97,7 @@ export default function Event() {
                             </div>
                             <div className="flex-1 min-w-0">
                                 <p className='EventType'>
-                                    Assinmint
+                                Assignment
                                 </p>
                                 <small className="">
                                     2023/12/15 to 2023/12/15

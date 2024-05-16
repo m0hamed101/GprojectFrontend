@@ -29,42 +29,13 @@ function App() {
 
   const { user } = useAuthContext()
   const UserId = user?._id
-  // console.log(UserId);
-
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
-
-
-  //   useEffect(() => {
-  //     const fetchCourses = async () => {
-  //         try {
-  //             // const response = await fetch(`http://localhost:5000/api/user/getCourse/${UserId}`);
-  //             const response = await fetch(`https://gproject-63ye.onrender.com/api/user/getCourse/${UserId}`);
-
-  //             if (!response.ok) {
-  //                 throw new Error('Network response was not ok');
-  //             }
-
-  //             const responseData = await response.json();
-  //             setCourses(responseData);
-  //             setLoading(false);
-  //         } catch (error) {
-  //             console.error('Fetch error:', error);
-  //             setLoading(false);
-  //         }
-  //     };
-
-  //     // Call the fetchCourses function
-  //     fetchCourses();
-  // }, [UserId]);
-
-
-
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path='/' element={user ? <Home /> : <Form />} />
-        <Route exact path='/Quizapp' element={user ? <QuizApp/> : <Form />} />
+        <Route exact path='/' element={user ? <Home /> : <Form />}/>
+        <Route exact path='/CourseDetails/:course/:_id' element={user ? <QuizApp/> : <Form />} />
         <Route exact path='/CourseDetails/:id' element={user ? <CourseDetails /> : <Form />} />
         <Route path='/Admin_users' element={user ? <Admin_users /> : <Form />} />
         <Route path='/Admin_users/Create_New_User' element={user ? <AddUser /> : <Form />} />

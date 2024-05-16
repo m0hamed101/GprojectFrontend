@@ -175,6 +175,7 @@ import { Bars3Icon, XMarkIcon, } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../pages/Login/hooks/useAuthContext'
 import { useLogout } from '../../pages/Login/hooks/useLogout'
+import logo from '../../Assets/photo_2024-02-28_12-12-41.png'
 
 
 function classNames(...classes) {
@@ -203,6 +204,7 @@ const Header = () => {
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+            
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -280,7 +282,7 @@ const Header = () => {
                   <Link to={"/"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Courses</Link>
                   <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">instructor</Link>
                   <span className='m-5'> Hi , {UserId}</span>
-      {/*<Link to={"/MyclassName"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">className</Link>*/}
+                  {/*<Link to={"/MyclassName"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">className</Link>*/}
                 </div>}
 
               {User === "Instructor" &&
