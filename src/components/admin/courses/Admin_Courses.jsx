@@ -121,10 +121,3 @@ export const Admin_Courses = () => {
     </div>
   )
 }
-
-/*<h3>CONTACTS LIST</h3>
-        <Input style={{ margin: '15px' }}
-          placeholder="Search name"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />*/

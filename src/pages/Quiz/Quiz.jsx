@@ -9,11 +9,16 @@ const QuizApp = () => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [quizFinished, setQuizFinished] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
-  const [editing, setEditing] = useState(false);
-  const [questionsData, setQuestionsData] = useState([]);
+  const [quizDetails, setQuizDetails] = useState(null);
   const [currentScore, setCurrentScore] = useState(0);
-  const [triesLeft, setTriesLeft] = useState(5);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [triesLeft, setTriesLeft] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userAttempts, setUserAttempts] = useState(0);
+  const [maxAttempts, setMaxAttempts] = useState(0);
+  const [logData, setLogData] = useState([]);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+  const [totalQuizTime, setTotalQuizTime] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,22 +26,31 @@ const QuizApp = () => {
         const response = await fetch('http://localhost:5000/api/quiz/fetchQuestions', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            courseId: "65eb56b3e097dd4798932226",
-            userId: "65a9b3a1cf24125253783aec",
-            quizId: "663238035f5dd141e5bbd828"
-          })
+            courseId: '65eb56b3e097dd4798932226',
+            userId: '65a9b3a1cf24125253783aec',
+            quizId: '663238035f5dd141e5bbd828',
+          }),
         });
         const data = await response.json();
         console.log(data);
-        setQuestionsData(data.quizDetails.questions);
-        setTimeLeft(data.quizDetails.questions[0].timeLimitMinutes * 60);
-        setIsLoading(false); // Set loading to false after data is fetched
+
+        if (data.quizDetails && data.quizDetails.quizDetails) {
+          setQuizDetails(data.quizDetails.quizDetails);
+          setScore(data.score);
+          setUserAttempts(data.userAttempts);
+          setMaxAttempts(data.quizDetails.quizDetails.maxAttempts);
+          setTimeLeft(data.quizDetails.quizDetails.timeLimitMinutes * 60);
+        } else {
+          console.error('Quiz details are not defined in the response:', data);
+        }
+
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching quiz data:', error);
-        setIsLoading(false); // Set loading to false on error
+        setIsLoading(false);
       }
     };
 
@@ -44,75 +58,122 @@ const QuizApp = () => {
   }, []);
 
   useEffect(() => {
-    if (quizStarted && !quizFinished) {
-      setCurrentQuestion(0);
-      setScore(0);
-      setSelectedOption('');
-      setTimeLeft(questionsData[0].timeLimitMinutes * 60);
-      setQuizFinished(false);
-    }
-  }, [quizStarted, quizFinished, questionsData]);
-
-  useEffect(() => {
-    if (currentQuestion !== undefined && currentQuestion < questionsData.length && timeLeft > 0) {
-      const timer = setTimeout(() => {
-        setTimeLeft(timeLeft => timeLeft - 1);
+    let timer;
+    if (quizStarted && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
       }, 1000);
-
-      return () => clearTimeout(timer);
-    } else if (currentQuestion !== undefined && currentQuestion < questionsData.length && timeLeft === 0) {
+    } else if (timeLeft === 0 && quizStarted) {
       handleNextQuestion();
     }
-  }, [currentQuestion, timeLeft, questionsData]);
+    return () => clearInterval(timer);
+  }, [timeLeft, quizStarted]);
 
-  const handleStartQuiz = () => {
-    setQuizStarted(true);
-    setCurrentScore(0);
-    setTriesLeft(5);
+  const handleStartQuiz = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/quiz/incrementUserAttempts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          courseId: '65eb56b3e097dd4798932226',
+          userId: '65a9b3a1cf24125253783aec',
+          quizId: '663238035f5dd141e5bbd828',
+        }),
+      });
+      const data = await response.json();
+      console.log('Incremented user attempts:', data.userAttempts);
+
+      if (response.ok) {
+        setQuizStarted(true);
+        setCurrentScore(0);
+        setTriesLeft(maxAttempts);
+        setTimeLeft((quizDetails.timeLimitMinutes || 0) * 60);
+        setStartTime(Date.now());
+      } else {
+        console.error('Failed to increment user attempts');
+      }
+    } catch (error) {
+      console.error('Error starting quiz:', error);
+    }
   };
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
   };
 
-  const handleNextQuestion = () => {
-    const currentQuestionData = questionsData[currentQuestion];
-    const isCorrectAnswer = selectedOption === currentQuestionData.answer;
+  const handleNextQuestion = async () => {
+    const currentQuestionData = quizDetails.questions[currentQuestion];
+    const isCorrectAnswer = selectedOption === currentQuestionData.right_answer;
+
+    const logEntry = {
+      id: currentQuestionData._id,
+      model_answer: currentQuestionData.right_answer,
+      student_answer: selectedOption,
+    };
+
+    setLogData((prevLogData) => [...prevLogData, logEntry]);
 
     if (isCorrectAnswer) {
-      setScore(score => score + currentQuestionData.points);
-      setCurrentScore(currentScore => currentScore + currentQuestionData.points);
+      setScore(score + currentQuestionData.points);
+      setCurrentScore(currentScore + currentQuestionData.points);
     } else {
-      setTriesLeft(triesLeft => triesLeft - 1);
+      setTriesLeft(triesLeft - 1);
     }
 
     setSelectedOption('');
-    setCurrentQuestion(currentQuestion => currentQuestion + 1);
-
-    if (currentQuestion < questionsData.length - 1) {
-      setTimeLeft(questionsData[currentQuestion + 1].timeLimitMinutes * 60);
+    if (currentQuestion < quizDetails.questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+      setTimeLeft((quizDetails.timeLimitMinutes || 0) * 60);
     } else {
-      setQuizFinished(true);
+      handleQuizCompletion();
     }
   };
 
-  const handleEditing = () => {
-    setEditing(!editing);
+  const handleQuizCompletion = async () => {
+    setQuizFinished(true);
+    setEndTime(Date.now());
+
+    const totalTimeSeconds = Math.floor((Date.now() - startTime) / 1000);
+    setTotalQuizTime((prevTime) => prevTime + totalTimeSeconds);
+
+    // Print the accumulated logData to verify
+    console.log(JSON.stringify({ data: logData }, null, 2));
+
+    // Send log data to the prediction API
+    try {
+      const response = await fetch('http://127.0.0.1:5000/predict', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: logData }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const predictionResult = await response.json();
+      // Print the complete predictionResult
+      console.log('Prediction Result:', predictionResult);
+    } catch (error) {
+      console.error('Error predicting:', error);
+    }
   };
 
-  const handleDeleteQuestion = (index) => {
-    const updatedQuestions = [...questionsData];
-    updatedQuestions.splice(index, 1);
-    setQuestionsData(updatedQuestions);
-  };
-
-  const handleAddQuestion = (newQuestion) => {
-    setQuestionsData([...questionsData, newQuestion]);
+  const handlePreviousQuestion = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1);
+      setSelectedOption('');
+      setTimeLeft((quizDetails.timeLimitMinutes || 0) * 60);
+    }
   };
 
   const renderOptions = () => {
-    const question = questionsData[currentQuestion];
-    if (question.type === "MCQ") {
+    const question = quizDetails?.questions[currentQuestion];
+    if (question && question.type === 'MCQ') {
       return question.options.map((option, index) => (
         <div
           key={index}
@@ -122,7 +183,7 @@ const QuizApp = () => {
           {option.option}
         </div>
       ));
-    } else if (question.type === "ANSWER") {
+    } else if (question && question.type === 'ANSWER') {
       return (
         <input
           type="text"
@@ -135,99 +196,59 @@ const QuizApp = () => {
     }
   };
 
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
   return (
     <div>
       <Header />
       <div className="quiz-container">
-        {isLoading && <div>Loading...</div>} {/* Show loading message while data is being fetched */}
+        {isLoading && <div>Loading...</div>}
         {!isLoading && !quizStarted && (
           <div className="button-container">
-            <button onClick={handleStartQuiz} style={{border:'solid', padding:'5px'}}>Start Quiz</button>
-            <div>Score: {currentScore}</div>
-            <div>maxAttempts: {triesLeft}</div>
-            <div>userAttempts: {triesLeft}</div>
+            <div>Max Attempts: {maxAttempts}</div>
+            <button
+              onClick={handleStartQuiz}
+              style={{
+                border: 'solid',
+                padding: '5px',
+                backgroundColor: userAttempts >= maxAttempts ? '#cccccc' : '#007bff',
+                color: '#ffffff',
+                cursor: userAttempts >= maxAttempts ? 'not-allowed' : 'pointer',
+              }}
+              disabled={userAttempts >= maxAttempts}
+            >
+              Start Quiz
+            </button>
+            <div>Score: {score}</div>
+            <div>User Attempts: {userAttempts}</div>
+            <div>Total Quiz Time: {formatTime(totalQuizTime)}</div>
           </div>
         )}
-        {quizStarted && !quizFinished && <div className="timer m-5">Time left: {Math.floor(timeLeft / 60)} minutes</div>}
-        <div className="question">
-          {currentQuestion !== undefined && questionsData && questionsData.length > 0 && currentQuestion < questionsData.length && (
-            <div>
-              <h2>{questionsData[currentQuestion].question}</h2>
+        {quizStarted && !quizFinished && (
+          <div className="quiz-body">
+            <div className="timer">Time Left: {formatTime(timeLeft)}</div>
+            <div className="question-container">
+              <div className="question">{quizDetails.questions[currentQuestion].question}</div>
               <div className="options">{renderOptions()}</div>
             </div>
-          )}
-          <div className="button-container">
-            {quizStarted && (
-              <button onClick={handleNextQuestion}>
-                {currentQuestion !== undefined && currentQuestion < questionsData.length - 1 ? 'Next' : 'Finish'}
-              </button>
-            )}
-          </div>
-        </div>
-        <div className="quiz-result">
-          {quizFinished && (
-            <div>
-              <h2>Quiz Complete!</h2>
-              <p>Your Score: {score}</p>
+            <div className="button-container">
+              <button onClick={handlePreviousQuestion} disabled={currentQuestion === 0}>Previous Question</button>
+              <button onClick={handleNextQuestion}>Next Question</button>
             </div>
-          )}
-        </div>
-        {editing && (
-          <div>
-            <EditComponent
-              questionsData={questionsData}
-              onDeleteQuestion={handleDeleteQuestion}
-              onAddQuestion={handleAddQuestion}
-            />
           </div>
         )}
-        <button onClick={handleEditing}>{editing ? 'Finish Editing' : 'Edit Questions'}</button>
-      </div>
-    </div>
-  );
-};
-
-const EditComponent = ({ questionsData, onDeleteQuestion, onAddQuestion }) => {
-  const [questionInput, setQuestionInput] = useState('');
-  const [answerInput, setAnswerInput] = useState('');
-
-  const handleQuestionChange = (e) => {
-    setQuestionInput(e.target.value);
-  };
-
-  const handleAnswerChange = (e) => {
-    setAnswerInput(e.target.value);
-  };
-
-  const handleSubmit = () => {
-    onAddQuestion({ question: questionInput, answer: answerInput, type: "ANSWER", timeLimitMinutes: 20 });
-    setQuestionInput('');
-    setAnswerInput('');
-  };
-
-  return (
-    <div>
-      {questionsData.map((question, index) => (
-        <div key={index} className="question-card">
-          <h3>Question: {question.question}</h3>
-          <h3>Answer: {question.answer}</h3>
-          <button onClick={() => onDeleteQuestion(index)}>Delete</button>
-        </div>
-      ))}
-      <div className="new-question">
-        <input
-          type="text"
-          placeholder="Enter question"
-          value={questionInput}
-          onChange={handleQuestionChange}
-        />
-        <input
-          type="text"
-          placeholder="Enter answer"
-          value={answerInput}
-          onChange={handleAnswerChange}
-        />
-        <button onClick={handleSubmit}>Add Question</button>
+        {quizFinished && (
+          <div className="quiz-result">
+            <h2>Quiz Complete!</h2>
+            <p>Your Score: {score}</p>
+            <p>Total Quiz Time: {formatTime(totalQuizTime)}</p>
+            <pre>{JSON.stringify({ data: logData }, null, 2)}</pre>
+          </div>
+        )}
       </div>
     </div>
   );

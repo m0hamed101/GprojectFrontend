@@ -363,15 +363,18 @@ export default function CourseDetails() {
                     suscipit, aspernatur vitae corporis libero blanditiis alias
                     deleniti dolore. Deleniti itaque sed atque cum recusandae.
                   </div>
-                  <a
+                  {/* <a
                     className="pdfimg flex bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded"
                     href={course.fileLink}
                   >
                     <img src={pdficon} alt="PDF icon" />
                     Download Assignment
-                  </a>
+                  </a> */}
                   <div className="quizlink">
-                    <Link className="Link" to={"/"}>
+                    <Link
+                      className="pdfimg flex bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded"
+                      to={`assignment/${course?._id}`}
+                    >
                       Upload Assignment
                     </Link>
                   </div>

@@ -51,4 +51,3 @@ export const Courses = () => {
         </Container>
     );
 };
-// <h1 key={item.id}>{item.name}</h1>

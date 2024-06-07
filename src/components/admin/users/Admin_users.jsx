@@ -4,10 +4,6 @@ import Header from '../../Header/Header';
 import { Link } from 'react-router-dom';
 import Loader from '../../loading/loading';
 
-
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-
 export const List = ({ contacts, loading, onDelete }) => {
 
   const [courses, setCourses] = useState([]);
@@ -85,9 +81,6 @@ export const List = ({ contacts, loading, onDelete }) => {
                     <div className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       type="button" onClick={handleModalOpen}>Delete courses</div>
                   </td>
-                  {// <td className="px-6 py-4">
-                    // </td>
-                  }
                 </tr>
               ))}
             </tbody>
