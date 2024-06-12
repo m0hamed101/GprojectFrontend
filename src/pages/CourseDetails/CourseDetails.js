@@ -12,6 +12,7 @@ import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { DeleteMaterialbtn } from "../../components/loading/loading";
 import axios from "axios";
+import Loader from "../../components/loading/loading"; // Import your Loader component
 
 export default function CourseDetails() {
   const { user } = useAuthContext();
@@ -25,6 +26,7 @@ export default function CourseDetails() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [courses, setCourses] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(true); // State for loading
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -50,8 +52,7 @@ export default function CourseDetails() {
       return;
     }
     setUploading(true);
-    // fetch('https://gproject-63ye.onrender.com/api/course/addLectureToCourse', {
-    fetch("http://localhost:5000/api/course/addLectureToCourse", {
+    fetch("http://gproject-63ye.onrender.com/api/course/addLectureToCourse", {
       method: "POST",
       body: JSON.stringify({
         course_id: id,
@@ -138,8 +139,10 @@ export default function CourseDetails() {
 
         const responseData = await response.json();
         setCourses(responseData);
+        setLoading(false); // Set loading to false when data is fetched
       } catch (error) {
         console.error("Fetch error:", error);
+        setLoading(false); // Set loading to false on error
       }
     };
     fetchCourses();
@@ -266,124 +269,137 @@ export default function CourseDetails() {
       </div>
 
       <div className="">
-        {courses[0]?.materials.map((course) => {
-          switch (course?.type) {
-            case "lecture":
-              return (
-                <div
-                  className="border topic rounded-lg shadow m-3 p-2"
-                  key={course.title}
-                >
+        {loading ? (
+          <Loader /> // Display loader while loading
+        ) : (
+          courses[0]?.materials.map((course) => {
+            switch (course?.type) {
+              case "lecture":
+                return (
                   <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      padding: "15px",
-                    }}
+                    className="border topic rounded-lg shadow m-3 p-2"
+                    key={course.title}
                   >
-                    <small className="topic-title">{course.title}</small>
-                    {(Userpermission === "admin" ||
-                      Userpermission === "instructor") && (
-                      <button onClick={() => handleDelete(id, course._id)}>
-                        <DeleteMaterialbtn />
-                      </button>
-                    )}
-                  </div>
-                  <div className="NOTES">{course.description}</div>
-                  <a
-                    className="pdfimg flex bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded"
-                    href={course.fileLink}
-                  >
-                    <img src={pdficon} alt="PDF icon" />
-                    Download Lecture
-                  </a>
-                </div>
-              );
-            case "quiz":
-              return (
-                <div
-                  className="border topic rounded-lg shadow m-3 p-2"
-                  key={course.title}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      padding: "15px",
-                    }}
-                  >
-                    <small className="topic-title">{course.title}</small>
-                    {(Userpermission === "admin" ||
-                      Userpermission === "instructor") && (
-                      <button onClick={() => handleDelete(id, course._id)}>
-                        <DeleteMaterialbtn />
-                      </button>
-                    )}
-                  </div>
-                  <h1 className="m-6">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Consequatur, dolores. Dicta, aperiam recusandae! Fuga vero
-                    suscipit, aspernatur vitae corporis libero blanditiis alias
-                    deleniti dolore. Deleniti itaque sed atque cum recusandae.
-                  </h1>
-                  <div className="quizlink">
-                    <Link
-                      to={`${course?._id}`}
-                      className="Link flex bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded"
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        padding: "15px",
+                      }}
                     >
-                      Quiz
-                    </Link>
-                  </div>
-                </div>
-              );
-            case "assignment":
-              return (
-                <div
-                  className="border topic rounded-lg shadow m-3 p-2"
-                  key={course.title}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      padding: "15px",
-                    }}
-                  >
-                    <small className="topic-title">{course.title}</small>
-                    {(Userpermission === "admin" ||
-                      Userpermission === "instructor") && (
-                      <button onClick={() => handleDelete(id, course._id)}>
-                        <DeleteMaterialbtn />
-                      </button>
-                    )}
-                  </div>
-                  <div className="NOTES">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Consequatur, dolores. Dicta, aperiam recusandae! Fuga vero
-                    suscipit, aspernatur vitae corporis libero blanditiis alias
-                    deleniti dolore. Deleniti itaque sed atque cum recusandae.
-                  </div>
-                  {/* <a
-                    className="pdfimg flex bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded"
-                    href={course.fileLink}
-                  >
-                    <img src={pdficon} alt="PDF icon" />
-                    Download Assignment
-                  </a> */}
-                  <div className="quizlink">
-                    <Link
+                      <small className="topic-title">{course.title}</small>
+                      {(Userpermission === "admin" ||
+                        Userpermission === "instructor") && (
+                        <button onClick={() => handleDelete(id, course._id)}>
+                          <DeleteMaterialbtn />
+                        </button>
+                      )}
+                    </div>
+                    <div className="NOTES">{course.description}</div>
+                    <a
                       className="pdfimg flex bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded"
-                      to={`assignment/${course?._id}`}
+                      href={course.fileLink}
                     >
-                      Upload Assignment
-                    </Link>
+                      <img src={pdficon} alt="PDF icon" />
+                      Download Lecture
+                    </a>
                   </div>
-                </div>
-              );
-            default:
-              return null;
-          }
-        })}
+                );
+              case "quiz":
+                return (
+                  <div
+                    className="border topic rounded-lg shadow m-3 p-2"
+                    key={course.title}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        padding: "15px",
+                      }}
+                    >
+                      <small className="topic-title">{course.title}</small>
+                      {(Userpermission === "admin" ||
+                        Userpermission === "instructor") && (
+                        <button onClick={() => handleDelete(id, course._id)}>
+                          <DeleteMaterialbtn />
+                        </button>
+                      )}
+                    </div>
+                    <h1 className="m-6">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Consequatur, dolores. Dicta, aperiam recusandae! Fuga vero
+                      suscipit, aspernatur vitae corporis libero blanditiis alias
+                      deleniti dolore. Deleniti itaque sed atque cum recusandae.
+                    </h1>
+                    <div className="quizlink flex">
+                      <Link
+                        to={`${course?._id}`}
+                        className="Link  w-full  bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded"
+                      >
+                        Quiz
+                      </Link>
+                      {(Userpermission === "admin" ||
+                        Userpermission === "instructor") && (
+                        <Link
+                          to={`edit_quiz/${course?._id}`}
+                          className="Link w-full bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded"
+                        >
+                          Edit Quiz
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                );
+              case "assignment":
+                return (
+                  <div
+                    className="border topic rounded-lg shadow m-3 p-2"
+                    key={course.title}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        padding: "15px",
+                      }}
+                    >
+                      <small className="topic-title">{course.title}</small>
+                      {(Userpermission === "admin" ||
+                        Userpermission === "instructor") && (
+                        <button onClick={() => handleDelete(id, course._id)}>
+                          <DeleteMaterialbtn />
+                        </button>
+                      )}
+                    </div>
+                    <div className="NOTES">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Consequatur, dolores. Dicta, aperiam recusandae! Fuga vero
+                      suscipit, aspernatur vitae corporis libero blanditiis alias
+                      deleniti dolore. Deleniti itaque sed atque cum recusandae.
+                    </div>
+                    {/* <a
+                      className="pdfimg flex bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded"
+                      href={course.fileLink}
+                    >
+                      <img src={pdficon} alt="PDF icon" />
+                      Download Assignment
+                    </a> */}
+                    <div className="quizlink">
+                      <Link
+                        className="pdfimg flex bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 m-2 border border-blue-500 hover:border-transparent rounded"
+                        to={`assignment/${course?._id}`}
+                      >
+                        Upload Assignment
+                      </Link>
+                    </div>
+                  </div>
+                );
+              default:
+                return null;
+            }
+          })
+        )}
       </div>
     </div>
   );

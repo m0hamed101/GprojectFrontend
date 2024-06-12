@@ -23,7 +23,7 @@ const QuizApp = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/quiz/fetchQuestions', {
+        const response = await fetch('https://gproject-63ye.onrender.com/api/quiz/fetchQuestions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const QuizApp = () => {
 
   const handleStartQuiz = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/quiz/incrementUserAttempts', {
+      const response = await fetch('https://gproject-63ye.onrender.com/api/quiz/incrementUserAttempts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

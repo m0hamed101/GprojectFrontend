@@ -22,7 +22,7 @@ export default function Assignment() {
   // Define fetchAssignment outside useEffect
   const fetchAssignment = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/course/${courseId}/assignments/${assignmentId}`);
+      const response = await axios.get(`https://gproject-63ye.onrender.com/api/course/${courseId}/assignments/${assignmentId}`);
       setAssignment(response.data);
     } catch (error) {
       console.error('Error fetching assignment:', error);
@@ -58,7 +58,7 @@ export default function Assignment() {
         fileLink
       };
 
-      const uploadResponse = await axios.post(`http://localhost:5000/api/course/${courseId}/assignments/${assignmentId}/upload`, data);
+      const uploadResponse = await axios.post(`https://gproject-63ye.onrender.com/api/course/${courseId}/assignments/${assignmentId}/upload`, data);
       console.log('Upload response:', uploadResponse.data);
 
       setUserFile(null);
@@ -72,7 +72,7 @@ export default function Assignment() {
   const handleDeleteRow = async (userIdToDelete) => {
     try {
       // Make a DELETE request to your backend API to delete the user details
-      await axios.delete(`http://localhost:5000/api/course/${courseId}/assignments/${assignmentId}/user-details/${userIdToDelete}`);
+      await axios.delete(`https://gproject-63ye.onrender.com/api/course/${courseId}/assignments/${assignmentId}/user-details/${userIdToDelete}`);
       // Fetch assignment details again to reflect the changes
       fetchAssignment();
     } catch (error) {
@@ -87,7 +87,7 @@ export default function Assignment() {
         userScore: Number(newScore)
       };
 
-      const response = await axios.put(`http://localhost:5000/api/course/${courseId}/assignments/${assignmentId}/user-details/${userIdToUpdate}`, data);
+      const response = await axios.put(`https://gproject-63ye.onrender.com/api/course/${courseId}/assignments/${assignmentId}/user-details/${userIdToUpdate}`, data);
       console.log('Update score response:', response.data);
 
       // Fetch assignment details again to reflect the changes

@@ -19,6 +19,7 @@ import Add_Course from './components/admin/courses/Add_course';
 import { useEffect, useState } from 'react';
 import QuizApp from './pages/Quiz/Quiz';
 import Assignment from './pages/assignment/Assignment';
+import Edit_quiz from './pages/Quiz/Edit_quiz';
 
 
 // 320px — 480px: Mobile devices
@@ -38,6 +39,7 @@ function App() {
         <Route exact path='/' element={user ? <Home /> : <Form />}/>
         <Route exact path='/CourseDetails/:course/:_id' element={user ? <QuizApp/> : <Form />} />
         <Route exact path='/CourseDetails/:courseId/assignment/:assignmentId' element={user ? <Assignment/> : <Form />} />
+        <Route exact path='/CourseDetails/:courseId/edit_quiz/:_id' element={user ? <Edit_quiz/> : <Form />} />
         <Route exact path='/CourseDetails/:id' element={user ? <CourseDetails /> : <Form />} />
         <Route path='/Admin_users' element={user ? <Admin_users /> : <Form />} />
         <Route path='/Admin_users/Create_New_User' element={user ? <AddUser /> : <Form />} />
