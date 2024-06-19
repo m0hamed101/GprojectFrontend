@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import EventImage from "../../Assets/DataBase.jpg";
 import "../CourseDetails/CourseDetails.css";
 import pdficon from "../../Assets/pdf-download-2617.png";
 import { Link } from "react-router-dom";
-import Header from "../../components/Header/Header";
 import { useAuthContext } from "../Login/hooks/useAuthContext";
 import { useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import {TextField} from '@mui/material';
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { DeleteMaterialbtn } from "../../components/loading/loading";
