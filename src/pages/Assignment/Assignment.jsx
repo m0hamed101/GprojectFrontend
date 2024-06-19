@@ -119,7 +119,6 @@ export default function Assignment() {
 
   return (
     <div>
-      <Header />
       <div className="mt-10 flex items-center justify-center h-screen">
         <div className="w-1/2 bg-white shadow-md rounded-lg p-8">
           <h2 className="text-lg font-bold mb-4">Assignment Details</h2>
@@ -178,9 +177,7 @@ export default function Assignment() {
                 <th className="border px-4 py-2 text-left">Username</th>
                 <th className="border px-4 py-2 text-left">Score</th>
                 <th className="border px-4 py-2 text-left">File Link</th>
-                {permission === 'admin' && (
-                  <th className="border px-4 py-2 text-left">Actions</th>
-                )}
+                <th className="border px-4 py-2 text-left">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -206,34 +203,36 @@ export default function Assignment() {
                       View File
                     </a>
                   </td>
-                  {permission === 'admin' && (
-                    <td className="border px-4 py-2">
-                      {editUserId === userDetail.id ? (
-                        <button
-                          onClick={() => handleUpdateScore(userDetail.id, editScore)}
-                          className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600 mr-2"
-                        >
-                          Save
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => {
-                            setEditUserId(userDetail.id);
-                            setEditScore(userDetail.user_score);
-                          }}
-                          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-2"
-                        >
-                          Edit
-                        </button>
-                      )}
-                      <button
-                        onClick={() => handleDeleteRow(userDetail.id)}
-                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  )}
+                  <td className="border px-4 py-2">
+                    {permission === 'admin' && (
+                      <>
+                        {editUserId === userDetail.id ? (
+                          <button
+                            onClick={() => handleUpdateScore(userDetail.id, editScore)}
+                            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600 mr-2"
+                          >
+                            Save
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setEditUserId(userDetail.id);
+                              setEditScore(userDetail.user_score);
+                            }}
+                            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mr-2"
+                          >
+                            Edit
+                          </button>
+                        )}
+                      </>
+                    )}
+                    <button
+                      onClick={() => handleDeleteRow(userDetail.id)}
+                      className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -50,7 +50,7 @@ const Header = () => {
           User === "user" &&
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
             <Link to={"/"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Courses</Link>
-            <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">instructor</Link>
+            {/* <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">instructor</Link> */}
             <span className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'> Your ID Is , {UserId}</span>
             {/*<Link to={"/MyclassName"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">className</Link>*/}
 
@@ -60,7 +60,7 @@ const Header = () => {
           User === "instructor" &&
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
             <Link to={"/"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Courses</Link>
-            <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Students</Link>
+            {/* <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Students</Link> */}
           </Popover.Group>
         }
         {
@@ -108,7 +108,7 @@ const Header = () => {
               {User === "user" &&
                 <div className="space-y-2 py-6">
                   <Link to={"/"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Courses</Link>
-                  <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">instructor</Link>
+                  {/* <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">instructor</Link> */}
                   <span className='m-5'> Hi , {UserId}</span>
                   {/*<Link to={"/MyclassName"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">className</Link>*/}
                 </div>}
@@ -116,7 +116,7 @@ const Header = () => {
               {User === "Instructor" &&
                 <div className="space-y-2 py-6">
                   <Link to={"/"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Courses</Link>
-                  <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Students</Link>
+                  {/* <Link to={"/Instructor"} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">  Students</Link> */}
                 </div>}
 
               {User === "admin" &&

@@ -1,5 +1,4 @@
 import './App.css';
-import Router from './router';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 
@@ -16,10 +15,10 @@ import { useAuthContext } from './pages/Login/hooks/useAuthContext'
 import AddUser from './components/admin/users/AddUser/AddUser';
 import UpdateUser from './components/admin/users/UpdateUser/UpdateUser';
 import Add_Course from './components/admin/courses/Add_course';
-import { useEffect, useState } from 'react';
 import QuizApp from './pages/Quiz/Quiz';
 import Assignment from './pages/assignment/Assignment';
 import Edit_quiz from './pages/Quiz/Edit_quiz';
+import Header from './components/Header/Header';
 
 
 // 320px — 480px: Mobile devices
@@ -30,11 +29,13 @@ import Edit_quiz from './pages/Quiz/Edit_quiz';
 function App() {
 
   const { user } = useAuthContext()
-  const UserId = user?._id
-  const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(false);
+    const User = user?.permission
+
   return (
     <BrowserRouter>
+    {
+          (User === "user"||User === "instructor"||User === "admin")&&
+    (<Header/>)}
       <Routes>
         <Route exact path='/' element={user ? <Home /> : <Form />}/>
         <Route exact path='/CourseDetails/:course/:_id' element={user ? <QuizApp/> : <Form />} />

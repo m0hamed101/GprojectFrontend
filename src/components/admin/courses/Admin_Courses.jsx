@@ -97,7 +97,6 @@ export const Admin_Courses = () => {
 
   return (
     <div>
-      <Header />
       <div style={{ width: "100%", display: "flex", alignItems: 'center', justifyContent: "center" }}>
       <Link to={'./Create_New_Course'} style={{ marginTop: '10px' }}>Create New Courses</Link>
       <input value={search} onChange={(e) => setSearch(e.target.value)} className="m-5 shadow appearance-none border rounded py-2 px-14 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Course Name" />

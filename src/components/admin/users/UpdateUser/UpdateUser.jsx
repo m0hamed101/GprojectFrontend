@@ -77,7 +77,6 @@ const UpdateUser = () => {
 
     return (
         <div>
-            <Header />
             <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {loading ? (
                     <Loader/>
